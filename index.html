@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <!-- load speech synth rec wrapper -->
+        <script src="artyom.window.min.js" type="text/javascript"></script>
+        <script>
+            // create global artyom object
+            window.eva = new Artyom();
+        </script>
+    </head>
+    <body>
+        <!-- to bypass "user interaction before VA" rule -->
+        <button id="btn">Allow Voice Synthesis</button>
+
+        <!-- load custom js -->
+        <script src="script.js"></script>
+    </body>
+</html>
