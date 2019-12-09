@@ -9,6 +9,8 @@ var oldStories = [];
 var story = "";
 var progress = 0;
 
+var oldStory;
+
 var engage = {
   indexes: ["old", "new"], // These spoken words will trigger the execution of the command
   action: function(i) {
@@ -40,13 +42,15 @@ var engage = {
 };
 
 function TellAStory() {
-  if (oldStories.length > 0) {
-    artyom.say("No stories yet maty");
-  } else {
-    var index = Math.floor(Math.random() * oldStories.length);
-    artyom.say(oldStories[index]);
-    //after this, go back to asking for new/old
-  }
+  GetCultData();
+  artyom.say(oldStory);
+  // if (oldStories.length > 0) {
+  //   artyom.say("No stories yet maty");
+  // } else {
+  //   var index = Math.floor(Math.random() * oldStories.length);
+  //   artyom.say(oldStories[index]);
+  //   //after this, go back to asking for new/old
+  // }
 }
 
 artyom.addCommands(engage);
@@ -98,7 +102,8 @@ function ProcessAnswer(input) {
 function HandleProgress() {
   progress++;
   if (progress > texts.length) {
-    oldStories.push(story);
+    // oldStories.push(story);
+    SetCultData(story);
     Reset();
   }
 }
