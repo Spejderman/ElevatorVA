@@ -1,25 +1,8 @@
-// var settings = {
-//   continuous: true, // Don't stop never because i have https connection
-//   onResult: function(text) {
-//     // Show the Recognized text in the console
-//     console.log("Recognized text: ", text);
-//     checkForPassword();
-//   },
-//   onStart: function() {
-//     console.log("Dictation started by the user");
-//   },
-//   onEnd: function() {
-//     alert("Dictation stopped by the user");
-//   }
-// };
-// eva.fatality();
-// var UserDictation = eva.newDictation(settings);
-
 ///         ///
 // RAW data ///
 ///         ///
 
-const artyom = new Artyom();
+// const artyom = new Artyom();
 var password = "banana";
 var progress = 0;
 var engagedInConversation = false;
@@ -45,8 +28,8 @@ var responses = [
 var answer = "";
 
 var commandPassword = {
-  indexes: [password], // These spoken words will trigger the execution of the command
-  action: function() {
+  indexes: ["old", "new"], // These spoken words will trigger the execution of the command
+  action: function(i) {
     console.log("password action");
     // Action to be executed when a index match with spoken word
     if (!engagedInConversation) {
@@ -63,10 +46,21 @@ function InitiateConversation() {
 
   //Structure
   // - Proclamation
-  artyom.say(proclamations[progress][0]);
+  artyom.say(proclamations[progress][0], {
+    onStart: function() {
+      artyom.dontObey();
+    },
+    onEnd: function() {
+      artyom.obey();
+    }
+  });
   // - Question
   artyom.say(questions[progress], {
+    onStart: function() {
+      artyom.dontObey();
+    },
     onEnd: function() {
+      artyom.obey();
       lookingForAnswer = true;
     }
   });
@@ -115,6 +109,7 @@ artyom.redirectRecognizedTextOutput(function(recognized, isFinal) {
   if (isFinal) {
     var arr = recognized.split(" ", -1);
 
+    //sort out empty empty spaces in array
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] === "") {
         arr.splice(i, 1);
@@ -124,6 +119,7 @@ artyom.redirectRecognizedTextOutput(function(recognized, isFinal) {
 
     console.log("First: " + arr[0] + " all:" + recognized);
 
+    // If EVA is looking for an answer, process it
     if (lookingForAnswer) {
       console.log("Looking for answer!");
       ProcessAnswer(arr[0]);
