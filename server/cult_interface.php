@@ -1,25 +1,33 @@
 <?php
 include 'cult_db_details.php';
 
-//  Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-if(isset($_GET["topic"])) $topic = htmlspecialchars($_GET["topic"]);
-if(isset($_GET["column"])) $column = htmlspecialchars($_GET["column"]);
+// Get query arguments
+if(isset($_GET["operation"])) $operation = htmlspecialchars($_GET["operation"]);
 if(isset($_GET["value"])) $value = htmlspecialchars($_GET["value"]);
 
-// branch for get/set
-$sql = "SELECT '$column' FROM '$tablename'";
-
-if ($conn->query($sql) === TRUE) {
-//     "New record created successfully";
-} else {
-//      $conn->error ";
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+if(!$conn) {
+    echo mysqli_error($conn);
 }
 
-$conn->close();
+switch($operation){
+    case 'read':
+            $sql = "SELECT what FROM $tablename ORDER BY RAND() LIMIT 1";
+            $result = mysqli_query($conn,$sql);
+            $row = mysqli_fetch_array($result);
+            echo $row[0];
+        break;
+    case 'write':
+            $sql = "INSERT INTO $tablename (what) VALUES ('$value')";
+            $result = mysqli_query($conn,$sql);
+        break;
+    case 'count':
+            $sql = "SELECT COUNT( what ) FROM $tablename";
+            $result = mysqli_query($conn,$sql);
+            $row = mysqli_fetch_array($result);
+            echo $row[0];
+        break;
+}
+
+mysqli_close($conn);
 ?>
