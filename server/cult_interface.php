@@ -15,10 +15,11 @@ switch($operation){
             $sql = "SELECT what FROM $tablename ORDER BY RAND() LIMIT 1";
             $result = mysqli_query($conn,$sql);
             $row = mysqli_fetch_array($result);
-            if($row[0] == "") echo "empty";
+            if($row[0] == "") echo "There are no old stories, matey";
             else echo $row[0];
         break;
     case 'write':
+            // Should really clean the query
             $sql = "INSERT INTO $tablename (what) VALUES ('$value')";
             $result = mysqli_query($conn,$sql);
         break;
