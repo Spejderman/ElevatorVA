@@ -97,7 +97,7 @@ function ProcessAnswer(input) {
 
 function HandleProgress() {
   progress++;
-  if (progress > 3) {
+  if (progress > texts.length) {
     oldStories.push(story);
     Reset();
   }
