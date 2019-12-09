@@ -15,7 +15,8 @@ switch($operation){
             $sql = "SELECT what FROM $tablename ORDER BY RAND() LIMIT 1";
             $result = mysqli_query($conn,$sql);
             $row = mysqli_fetch_array($result);
-            echo $row[0];
+            if($row[0] == "") echo "empty";
+            else echo $row[0];
         break;
     case 'write':
             $sql = "INSERT INTO $tablename (what) VALUES ('$value')";
