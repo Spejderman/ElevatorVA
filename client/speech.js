@@ -101,7 +101,7 @@ function ProcessAnswer(input) {
 
 function HandleProgress() {
   progress++;
-  if (progress > texts.length) {
+  if (progress > texts.length - 1) {
     // oldStories.push(story);
     SetCultData(story);
     Reset();
